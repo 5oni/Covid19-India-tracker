@@ -14,3 +14,9 @@
 * [Statewise-data-for-India](https://api.covid19india.org/data.json)
 * [Global-data](https://corona.lmao.ninja/v2/all)
 * [Global-Country-data](https://corona.lmao.ninja/v2/countries#)
+
+for local setup
+1.    create virtual environment
+2.    pip intsall -r requirements.txt
+3.    python manage.py migrate
+4.    python manage.py runserver
