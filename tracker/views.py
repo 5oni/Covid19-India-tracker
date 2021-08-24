@@ -9,50 +9,65 @@ now = datetime.now()
 
 def apiforindia():
     api="https://api.covid19india.org/data.json"
-
-    s=(requests.get(api)).text
-
-    data=json.loads(s)
+    try:
+        s=(requests.get(api)).text
+        data=json.loads(s)
+    except:
+        data=[]
     return data
 
 def apiforworld():
     api="https://corona.lmao.ninja/v2/all"
-    s=(requests.get(api)).text
-    data=json.loads(s)
+    try:
+        s=(requests.get(api)).text
+        data=json.loads(s)
+    except:
+        data=[]
     return data
 
 def country():
     api="https://corona.lmao.ninja/v2/countries#"
-
-    s=(requests.get(api)).text
-
-    data=json.loads(s)
+    try:
+        s=(requests.get(api)).text
+        data=json.loads(s)
+    except:
+        data=[]
     return data
 
 def district():
     api="https://api.covid19india.org/v2/state_district_wise.json"
+    try:
 
-    s=(requests.get(api)).text
+        s=(requests.get(api)).text
 
-    data=json.loads(s)
+        data=json.loads(s)
+    except:
+        data=[]
     return data
 
 def news():
-    url="https://news.google.com/topics/CAAqBwgKMMqAmAsw9KmvAw?hl=en-IN&gl=IN&ceid=IN%3Aen" #google news URL for scraping it.
-    q=requests.get(url)
-    soup=BeautifulSoup(q.text,"html.parser")
-    news_headline=soup.find_all('h3',class_="ipQwMb ekueJc RD0gLb") # News Headline
-    images = soup.findAll('img',class_="tvs3Id QwxBBf") #Image links related to News-headline
-    link = soup.findAll('a',class_="VDXfz") # News-Headline deatail link
-    news_headline_list=[n.text for n in news_headline]
-    image_link=[j['src'] for j in images]
-    headline_link=["https://news.google.com/"+str(j['href']) for j in link]
+    
+    try:
+        url="https://news.google.com/topics/CAAqBwgKMMqAmAsw9KmvAw?hl=en-IN&gl=IN&ceid=IN%3Aen" #google news URL for scraping it.
+        q=requests.get(url)
+        
 
-    serial=1
-    value=[]
-    for j in range(20):
-        value.append({"serial":serial,"date":now.strftime("%d %b"),"Headline":news_headline_list[j],"image_link":image_link[j],"headline_link":headline_link[j]})
-        serial+=1
+        soup=BeautifulSoup(q.text,"html.parser")
+    
+        news_headline=soup.find_all('h3',class_="ipQwMb ekueJc RD0gLb") # News Headline
+        images = soup.findAll('img',class_="tvs3Id QwxBBf") #Image links related to News-headline
+        link = soup.findAll('a',class_="VDXfz") # News-Headline deatail link
+        news_headline_list=[n.text for n in news_headline]
+        image_link=[j['src'] for j in images]
+        headline_link=["https://news.google.com/"+str(j['href']) for j in link]
+
+        serial=1
+        value=[]
+        for j in range(20):
+            value.append({"serial":serial,"date":now.strftime("%d %b"),"Headline":news_headline_list[j],"image_link":image_link[j],"headline_link":headline_link[j]})
+            serial+=1
+    except:
+        value=[]
 
     # with open("google-news"+str(now.strftime(" %d%b"))+".json", 'w') as file:
     #     json.dump(value, file)
